@@ -19,8 +19,9 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'category' => new CategorysimpleResource($this->category),
+            'category' => new CategorysimpleResource($this->whenLoaded("category")),
             'price' => $this->price,
+            'is_expensive' => $this->when($this->price > 1000, true, false),
             'di buat' => $this->created_at,
             'di update' => $this->updated_at,
 

@@ -16,7 +16,7 @@ class ProductSeeder extends Seeder
     {
        $product = new Product();
        $cate = Category::first();
-       $product->name = 'makanan';
+       $product->name = 'gula';
        $product->category_id = $cate->id;
        $product->save();
 

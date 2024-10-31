@@ -2,7 +2,9 @@
 
 use App\Http\Resources\CategoryCollection;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\ProductdebugResource;
 use App\Http\Resources\ProductResource;
+use App\Http\Resources\ProductsCollection;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -36,5 +38,19 @@ Route::get('/categories-custom', function () {
 });
 Route::get('/products/{id}', function ($id) {
     $products = Product::find($id);
+    $products->load('category');
     return new ProductResource($products);
+});
+Route::get('/products', function () {
+    $products = Product::with('category')->get();
+    return ProductResource::collection($products);
+});
+Route::get('/products-paging', function (Request $request) {
+    $page = $request->get('page', 1);
+    $products = Product::query()->paginate(perPage: 2, page: $page);
+    return new ProductsCollection($products);
+});
+Route::get('/products-debug/{id}', function ($id) {
+    $products = Product::find($id);
+    return new ProductdebugResource($products);
 });
